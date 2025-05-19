@@ -82,7 +82,7 @@ qa_results = []
 
 for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
                                       total=len(annotations_normal),
-                                      desc="Processing videos"):
+                                      desc=f"Processing videos "):
     video_path = normal_conv["video"][0]
     
 
