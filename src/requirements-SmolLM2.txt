@@ -1,0 +1,8 @@
+transformers
+datasets
+sentencepiece
+accelerate
+bitsandbytes
+num2words
+av
+peft
