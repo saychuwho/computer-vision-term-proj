@@ -1,0 +1,6 @@
+path: datasets-LISA-traffic-light
+train: images/train
+val: images/val
+
+nc: 7
+names: ['stop', 'go', 'warning', 'warningLeft', 'stopLeft', 'goLeft', 'goForward']

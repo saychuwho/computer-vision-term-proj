@@ -1,5 +1,6 @@
-path: dataset
+path: datasets-LISA-traffic-sign
 train: images/train
 val: images/val
 
-names:
+nc: 9
+names: ['stop', 'yeild', 'yieldAhead', 'merge', 'signalAhead', 'pedestrianCrossing', 'keepRight', 'speedLimit35', 'speedLimit25']

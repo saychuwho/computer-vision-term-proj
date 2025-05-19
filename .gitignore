@@ -1,3 +1,17 @@
 *.zip
 LISA-traffic-light/
 tiny-LISA-traffic-sign/
+
+*.png
+*.jpg
+*.txt
+
+runs/
+*.pt
+*.mp4
+
+finetuned-model/
+!finetuned-model/.gitkeep
+
+tmp.py
+tmp.sh
