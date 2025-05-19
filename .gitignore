@@ -17,3 +17,6 @@ finetuned-model/
 
 tmp.py
 tmp.sh
+
+datasets/videos-cut
+datasets/video-cuts

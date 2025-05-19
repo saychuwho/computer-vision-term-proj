@@ -4,8 +4,13 @@ import json
 from tqdm import tqdm
 
 model_path = "./finetuned-model/smollm2-sample"
-model = AutoModelForImageTextToText.from_pretrained(model_path, device_map="auto")
-processor = AutoProcessor.from_pretrained(model_path)
+preproc_path = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
+model = AutoModelForImageTextToText.from_pretrained(
+    model_path, 
+    device_map="auto",
+    torch_dtype=torch.bfloat16
+)
+processor = AutoProcessor.from_pretrained(preproc_path)
 
 
 def get_response(text_prompt, video_path):
