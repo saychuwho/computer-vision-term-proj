@@ -1,7 +1,7 @@
 from transformers import AutoProcessor, AutoModelForImageTextToText
 import torch
 import json
-import tqdm
+from tqdm import tqdm
 
 model_path = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
 processor = AutoProcessor.from_pretrained(model_path)
