@@ -3,13 +3,14 @@ import torch
 import json
 from tqdm import tqdm
 
+device="cuda:0"
 model_path = "./finetuned-model/smollm2-sample"
 preproc_path = "HuggingFaceTB/SmolVLM2-500M-Video-Instruct"
 model = AutoModelForImageTextToText.from_pretrained(
     model_path, 
-    device_map="auto",
-    torch_dtype=torch.bfloat16
-)
+    torch_dtype=torch.bfloat16,
+    _attn_implementation="flash_attention_2"
+).to("cuda")
 processor = AutoProcessor.from_pretrained(preproc_path)
 
 
@@ -44,18 +45,29 @@ def get_response(text_prompt, video_path):
 annotation_val_json_traffic = 'datasets/BDD-X-Annotations-finetune-val-traffic.json'
 annotation_val_json = 'datasets/BDD-X-Annotations-finetune-val.json'
 
-save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample.json'
+save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-after800.json'
+
+print("save file: ", save_json)
 
 with open(annotation_val_json, 'r') as f:
     annotations_normal = json.load(f)
 with open(annotation_val_json_traffic, 'r') as f:
     annotations_traffic = json.load(f)
 
+# partial save due to kill
 qa_results = []
+counter = 0
 
-for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
-                                      total=len(annotations_normal),
+annotations_normal_part = annotations_normal[801:]
+annotations_traffic_part = annotations_traffic[801:]
+
+# for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
+#                                       total=len(annotations_normal),
+#                                       desc="Processing videos"):
+for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_traffic_part),
+                                      total=len(annotations_normal_part),
                                       desc="Processing videos"):
+    
     video_path = normal_conv["video"][0]
     
 
@@ -66,7 +78,7 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffi
     responses = {}
     responses["video"] = [video_path]
     conversations = []
-    for i in range(0, 3, 2):
+    for i in [0, 2]:
         normal_text_prompt = normal_conv["conversations"][i]["value"]
         traffic_text_prompt = traffic_conv["conversations"][i]["value"]
 
@@ -87,6 +99,15 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffi
     responses["conversations"] = conversations
 
     qa_results.append(responses)
+
+
+    # if counter != 0 and counter % 200 == 0:
+    #     save_json_tmp = f'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-{counter}.json'
+        
+    #     with open(save_json_tmp, 'w') as f:
+    #         json.dump(qa_results, f, indent=4)
+
+    # counter += 1
 
 with open(save_json, 'w') as f:
     json.dump(qa_results, f, indent=4)
