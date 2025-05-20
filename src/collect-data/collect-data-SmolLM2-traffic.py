@@ -44,7 +44,7 @@ def get_response(text_prompt, video_path):
 annotation_val_json_traffic = 'datasets/BDD-X-Annotations-finetune-val-traffic.json'
 annotation_val_json = 'datasets/BDD-X-Annotations-finetune-val.json'
 
-save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-traffic.json'
+save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-traffic-after800.json'
 
 print("save file: ", save_json)
 
@@ -57,15 +57,15 @@ with open(annotation_val_json_traffic, 'r') as f:
 qa_results = []
 counter = 0
 
-# annotations_normal_part = annotations_normal[801:]
-# annotations_traffic_part = annotations_traffic[801:]
+annotations_normal_part = annotations_normal[801:]
+annotations_traffic_part = annotations_traffic[801:]
 
-for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
-                                      total=len(annotations_normal),
-                                      desc="Processing videos"):
-# for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_traffic_part),
-#                                       total=len(annotations_normal_part),
+# for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
+#                                       total=len(annotations_normal),
 #                                       desc="Processing videos"):
+for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_traffic_part),
+                                      total=len(annotations_normal_part),
+                                      desc="Processing videos"):
 
     video_path = normal_conv["video"][0]
     
@@ -100,13 +100,13 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffi
     qa_results.append(responses)
 
 
-    if counter != 0 and counter % 200 == 0:
-        save_json_tmp = f'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-traffic-{counter}.json'
+    # if counter != 0 and counter % 200 == 0:
+    #     save_json_tmp = f'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-traffic-{counter}.json'
         
-        with open(save_json_tmp, 'w') as f:
-            json.dump(qa_results, f, indent=4)
+    #     with open(save_json_tmp, 'w') as f:
+    #         json.dump(qa_results, f, indent=4)
 
-    counter += 1
+    # counter += 1
 
 with open(save_json, 'w') as f:
     json.dump(qa_results, f, indent=4)
