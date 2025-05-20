@@ -80,6 +80,8 @@ with open(annotation_val_json_traffic, 'r') as f:
 
 qa_results = []
 
+print(f"save file: {save_json}")
+
 for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
                                       total=len(annotations_normal),
                                       desc=f"Processing videos "):

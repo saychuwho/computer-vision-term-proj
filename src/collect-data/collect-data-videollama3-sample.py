@@ -73,7 +73,7 @@ def get_response(text_prompt, video_path):
 annotation_val_json_traffic = 'datasets/BDD-X-Annotations-finetune-val-traffic.json'
 annotation_val_json = 'datasets/BDD-X-Annotations-finetune-val.json'
 
-save_json = 'datasets/BDD-X-Annotations-finetune-val-output-videoLLaMA3-vanila.json'
+save_json = 'datasets/BDD-X-Annotations-finetune-val-output-videoLLaMA3-sample.json'
 
 with open(annotation_val_json, 'r') as f:
     annotations_normal = json.load(f)
