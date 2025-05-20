@@ -58,8 +58,13 @@ with open(annotation_val_json_traffic, 'r') as f:
 qa_results = []
 counter = 0
 
-annotations_normal_part = annotations_normal[801:]
-annotations_traffic_part = annotations_traffic[801:]
+annotations_normal_part = annotations_normal[:500]
+annotations_traffic_part = annotations_traffic[:500]
+
+traffic_question = {
+    0: "Can you see the traffic light in the video? what color is it?",
+    2: "Can you see the traffic sign in the video? what is it?"
+}
 
 # for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
 #                                       total=len(annotations_normal),
@@ -80,7 +85,8 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_t
     conversations = []
     for i in [0, 2]:
         normal_text_prompt = normal_conv["conversations"][i]["value"]
-        traffic_text_prompt = traffic_conv["conversations"][i]["value"]
+        # traffic_text_prompt = traffic_conv["conversations"][i]["value"]
+        traffic_text_prompt = traffic_question[i]
 
         normal_response = get_response(normal_text_prompt, video_path)
         traffic_response = get_response(traffic_text_prompt, video_path)
@@ -101,13 +107,13 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_t
     qa_results.append(responses)
 
 
-    # if counter != 0 and counter % 200 == 0:
-    #     save_json_tmp = f'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-{counter}.json'
+    if counter != 0 and counter % 200 == 0:
+        save_json_tmp = f'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-{counter}.json'
         
-    #     with open(save_json_tmp, 'w') as f:
-    #         json.dump(qa_results, f, indent=4)
+        with open(save_json_tmp, 'w') as f:
+            json.dump(qa_results, f, indent=4)
 
-    # counter += 1
+    counter += 1
 
 with open(save_json, 'w') as f:
     json.dump(qa_results, f, indent=4)

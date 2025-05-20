@@ -2,8 +2,8 @@ from rouge import Rouge
 from nltk.translate.bleu_score import sentence_bleu
 import json
 
-result_json = "datasets/BDD-X-Annotations-finetune-val-output-videoLLaMA3-vanila.json"
-result_file_name = "collected-data/videoLLaMA3-vanila.json"
+result_json = "datasets/BDD-X-Annotations-finetune-val-output-videoLLaMA3-traffic.json"
+result_file_name = "collected-data/videoLLaMA3-traffic.json"
 
 with open(result_json, "r") as f:
     results = json.load(f)
