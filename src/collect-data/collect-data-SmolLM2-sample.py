@@ -45,7 +45,7 @@ def get_response(text_prompt, video_path):
 annotation_val_json_traffic = 'datasets/BDD-X-Annotations-finetune-val-traffic.json'
 annotation_val_json = 'datasets/BDD-X-Annotations-finetune-val.json'
 
-save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-after800.json'
+save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-sample-500.json'
 
 print("save file: ", save_json)
 

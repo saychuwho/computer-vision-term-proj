@@ -43,7 +43,7 @@ def get_response(text_prompt, video_path):
 annotation_val_json_traffic = 'datasets/BDD-X-Annotations-finetune-val-traffic.json'
 annotation_val_json = 'datasets/BDD-X-Annotations-finetune-val.json'
 
-save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-vanila.json'
+save_json = 'datasets/BDD-X-Annotations-finetune-val-output-SmolLM2-vanila-500.json'
 
 with open(annotation_val_json, 'r') as f:
     annotations_normal = json.load(f)
@@ -52,8 +52,18 @@ with open(annotation_val_json_traffic, 'r') as f:
 
 qa_results = []
 
-for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffic),
-                                      total=len(annotations_normal),
+annotations_normal_part = annotations_normal[:500]
+annotations_traffic_part = annotations_traffic[:500]
+
+traffic_question = {
+    0: "Can you see the traffic light in the video? what color is it?",
+    2: "Can you see the traffic sign in the video? what is it?"
+}
+
+print("save file: ", save_json)
+
+for normal_conv, traffic_conv in tqdm(zip(annotations_normal_part, annotations_traffic_part),
+                                      total=len(annotations_normal_part),
                                       desc="Processing videos"):
     video_path = normal_conv["video"][0]
     
@@ -65,9 +75,9 @@ for normal_conv, traffic_conv in tqdm(zip(annotations_normal, annotations_traffi
     responses = {}
     responses["video"] = [video_path]
     conversations = []
-    for i in range(0, 3, 2):
+    for i in [0,2]:
         normal_text_prompt = normal_conv["conversations"][i]["value"]
-        traffic_text_prompt = traffic_conv["conversations"][i]["value"]
+        traffic_text_prompt = traffic_question[i]
 
         normal_response = get_response(normal_text_prompt, video_path)
         traffic_response = get_response(traffic_text_prompt, video_path)
